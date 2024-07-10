@@ -65,7 +65,7 @@ func TestSendMessage(t *testing.T) {
 func TestSendMessageWithInstance(t *testing.T) {
 	message := GetTextMessage("hello from instance", []any{})
 
-	rbmHelper, err := GetRBMHelperInstanceFromFile("telkomsel_khxk1xjf_agent", filepath.Join("temp", "credential-test-2.json"))
+	rbmHelper, err := GetRBMHelperInstanceFromFile("", filepath.Join("temp", ""))
 	if err != nil {
 		t.Errorf("fail to get rbm instance: %v", err)
 	}
