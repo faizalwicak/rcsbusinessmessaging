@@ -52,7 +52,7 @@ func TestSendMessage(t *testing.T) {
 		t.Errorf("fail to generate token: %v", err)
 	}
 
-	_, status, err := SendMessage("telkomsel_khxk1xjf_agent", token.AccessToken, "", message)
+	_, status, err := SendMessage("", token.AccessToken, "", message)
 	if err != nil {
 		t.Errorf("fail to send message: %v", err)
 	}
@@ -60,4 +60,15 @@ func TestSendMessage(t *testing.T) {
 	if status != 200 {
 		t.Errorf("fail to send message: message status: %d", status)
 	}
+}
+
+func TestSendMessageWithInstance(t *testing.T) {
+	message := GetTextMessage("hello from instance", []any{})
+
+	rbmHelper, err := GetRBMHelperInstanceFromFile("telkomsel_khxk1xjf_agent", filepath.Join("temp", "credential-test-2.json"))
+	if err != nil {
+		t.Errorf("fail to get rbm instance: %v", err)
+	}
+
+	rbmHelper.SendMessage("+6287778680696", message)
 }
