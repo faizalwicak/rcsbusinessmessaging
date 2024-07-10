@@ -30,3 +30,34 @@ func TestGetAgentFromFile(t *testing.T) {
 
 	assert.Equal(agentConfig.Email, agent["client_email"])
 }
+
+func TestGetAgentTokenFromFile(t *testing.T) {
+	_, err := GetAgentTokenFromFile(filepath.Join("temp", "credential-test-2.json"))
+	if err != nil {
+		t.Errorf("fail to generate token: %v", err)
+	}
+}
+
+func TestGenerateTextMessage(t *testing.T) {
+	message := GetTextMessage("hello", []any{})
+	assert := assert.New(t)
+	assert.Equal(string(message), "{\"contentMessage\":{\"text\":\"hello\"}}")
+}
+
+func TestSendMessage(t *testing.T) {
+	message := GetTextMessage("hello", []any{})
+
+	token, err := GetAgentTokenFromFile(filepath.Join("temp", "credential-test-2.json"))
+	if err != nil {
+		t.Errorf("fail to generate token: %v", err)
+	}
+
+	_, status, err := SendMessage("telkomsel_khxk1xjf_agent", token.AccessToken, "", message)
+	if err != nil {
+		t.Errorf("fail to send message: %v", err)
+	}
+
+	if status != 200 {
+		t.Errorf("fail to send message: message status: %d", status)
+	}
+}

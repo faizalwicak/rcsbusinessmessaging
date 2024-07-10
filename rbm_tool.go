@@ -46,11 +46,11 @@ func SendEvent(token string, msisdn string, event string, messageId string) erro
 	return err
 }
 
-func SendMessage(token string, msisdn string, message []byte) (string, int, error) {
+func SendMessage(agentId string, token string, msisdn string, message []byte) (string, int, error) {
 	bearer := "Bearer " + token
 
 	messageId := uuid.New().String() + "a"
-	url := "https://rcsbusinessmessaging.googleapis.com/v1/phones/" + msisdn + "/agentMessages?messageId=" + messageId
+	url := fmt.Sprintf("https://rcsbusinessmessaging.googleapis.com/v1/phones/%s/agentMessages?messageId=%s&agentId=%s", msisdn, messageId, agentId)
 
 	bodyReader := bytes.NewReader(message)
 
@@ -71,6 +71,12 @@ func SendMessage(token string, msisdn string, message []byte) (string, int, erro
 
 	debug := os.Getenv("DEBUG") == "1"
 
+	// bodyBytes, err := io.ReadAll(res.Body)
+	// if err != nil {
+	// 	fmt.Println("error get body", err)
+	// }
+	// fmt.Println(string(bodyBytes))
+
 	if debug &&
 		res.StatusCode != http.StatusOK &&
 		res.StatusCode != http.StatusNotFound &&
@@ -81,7 +87,7 @@ func SendMessage(token string, msisdn string, message []byte) (string, int, erro
 	return messageId, res.StatusCode, nil
 }
 
-func SendMultipleMessage(token string, msisdn string, messages [][]byte) (string, int, error) {
+func SendMultipleMessage(agentId string, token string, msisdn string, messages [][]byte) (string, int, error) {
 	if len(messages) == 0 {
 		return "", -1, fmt.Errorf("message empty")
 	}
@@ -90,7 +96,7 @@ func SendMultipleMessage(token string, msisdn string, messages [][]byte) (string
 	var messageId string
 
 	for _, message := range messages {
-		rbmId, status, err := SendMessage(token, msisdn, message)
+		rbmId, status, err := SendMessage(agentId, token, msisdn, message)
 		messageId = rbmId
 		if err != nil {
 			return messageId, 500, err
