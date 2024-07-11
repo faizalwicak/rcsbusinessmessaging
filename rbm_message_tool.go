@@ -80,7 +80,7 @@ func GetShareLocationoSuggestion(text string, postbackData string) ActionSuggest
 	}
 }
 
-func GetCreateCalendarEventSuggestion(text string, postbackData string, evnetTitle string, eventDescription string, startTime time.Time, endTime time.Time) ActionSuggestion {
+func GetCreateCalendarEventSuggestion(text string, postbackData string, eventTitle string, eventDescription string, startTime time.Time, endTime time.Time) ActionSuggestion {
 
 	text = emoji.Parse(text)
 
@@ -91,7 +91,7 @@ func GetCreateCalendarEventSuggestion(text string, postbackData string, evnetTit
 			CreateCalendarEventAction: &CreateCalendarEventAction{
 				StartTime:   startTime.Format("2006-01-02T15:04:05Z"),
 				EndTime:     endTime.Format("2006-01-02T15:04:05Z"),
-				Title:       evnetTitle,
+				Title:       eventTitle,
 				Description: eventDescription,
 			},
 		},
