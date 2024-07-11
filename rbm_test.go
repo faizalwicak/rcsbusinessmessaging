@@ -39,13 +39,13 @@ func TestGetAgentTokenFromFile(t *testing.T) {
 }
 
 func TestGenerateTextMessage(t *testing.T) {
-	message := GetTextMessage("hello", []any{})
+	message := GetTextMessage("hello", []RBMSuggestion{})
 	assert := assert.New(t)
 	assert.Equal(string(message), "{\"contentMessage\":{\"text\":\"hello\"}}")
 }
 
 func TestSendMessage(t *testing.T) {
-	message := GetTextMessage("hello", []any{})
+	message := GetTextMessage("hello", []RBMSuggestion{})
 
 	token, err := GetAgentTokenFromFile(filepath.Join("temp", "credential-test-2.json"))
 	if err != nil {
@@ -63,12 +63,12 @@ func TestSendMessage(t *testing.T) {
 }
 
 func TestSendMessageWithInstance(t *testing.T) {
-	message := GetTextMessage("hello from instance", []any{})
+	message := GetTextMessage("hello from instance", []RBMSuggestion{})
 
 	rbmHelper, err := GetRBMHelperInstanceFromFile("", filepath.Join("temp", ""))
 	if err != nil {
 		t.Errorf("fail to get rbm instance: %v", err)
 	}
 
-	rbmHelper.SendMessage("+6287778680696", message)
+	rbmHelper.SendMessage("", message)
 }

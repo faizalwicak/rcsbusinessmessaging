@@ -13,6 +13,7 @@ import (
 type RBMHelper struct {
 	agentId string
 	token   *oauth2.Token
+	debug   bool
 }
 
 func GetRBMHelperInstanceFromFile(agentId string, filename string) (*RBMHelper, error) {
@@ -23,7 +24,12 @@ func GetRBMHelperInstanceFromFile(agentId string, filename string) (*RBMHelper, 
 	return &RBMHelper{
 		agentId: agentId,
 		token:   token,
+		debug:   false,
 	}, nil
+}
+
+func (h *RBMHelper) SetDebug(d bool) {
+	h.debug = d
 }
 
 func (h *RBMHelper) SendEvent(msisdn string, event string, messageId string) error {
@@ -86,7 +92,7 @@ func (h *RBMHelper) SendMessage(msisdn string, message []byte) (string, int, err
 
 	defer res.Body.Close()
 
-	debug := os.Getenv("DEBUG") == "1"
+	// debug := os.Getenv("DEBUG") == "1"
 
 	// bodyBytes, err := io.ReadAll(res.Body)
 	// if err != nil {
@@ -94,7 +100,7 @@ func (h *RBMHelper) SendMessage(msisdn string, message []byte) (string, int, err
 	// }
 	// fmt.Println(string(bodyBytes))
 
-	if debug &&
+	if h.debug &&
 		res.StatusCode != http.StatusOK &&
 		res.StatusCode != http.StatusNotFound &&
 		res.StatusCode != http.StatusForbidden {

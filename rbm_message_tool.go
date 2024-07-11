@@ -98,8 +98,8 @@ func GetCreateCalendarEventSuggestion(text string, postbackData string, eventTit
 	}
 }
 
-func GetTextMessage(text string, suggestions []any) []byte {
-	var s []any
+func GetTextMessage(text string, suggestions []RBMSuggestion) []byte {
+	var s []RBMSuggestion
 	if len(suggestions) > 0 {
 		s = suggestions
 	}
@@ -117,8 +117,8 @@ func GetTextMessage(text string, suggestions []any) []byte {
 	return StructToJson(contentMessage)
 }
 
-func GetTextMessageStruct(text string, suggestions []any) ContentMessage {
-	var s []any
+func GetTextMessageStruct(text string, suggestions []RBMSuggestion) ContentMessage {
+	var s []RBMSuggestion
 	if len(suggestions) > 0 {
 		s = suggestions
 	}
@@ -136,8 +136,8 @@ func GetTextMessageStruct(text string, suggestions []any) ContentMessage {
 	return contentMessage
 }
 
-func GetStandaloneCardMessage(title string, description string, imageUrl string, mediaSize string, suggestions []any) []byte {
-	var s []any
+func GetStandaloneCardMessage(title string, description string, imageUrl string, mediaSize string, suggestions []RBMSuggestion) []byte {
+	var s []RBMSuggestion
 	if len(suggestions) > 0 {
 		s = suggestions
 	}
@@ -186,8 +186,8 @@ func GetCarouselCardMessage(cardWidth string, cardContent []CardContent) []byte 
 	return StructToJson(contentMessage)
 }
 
-func GetCardContent(title string, description string, imageUrl string, mediaSize string, suggestions []any) CardContent {
-	var s []any
+func GetCardContent(title string, description string, imageUrl string, mediaSize string, suggestions []RBMSuggestion) CardContent {
+	var s []RBMSuggestion
 	if len(suggestions) > 0 {
 		s = suggestions
 	}
@@ -211,7 +211,7 @@ func GetCardContent(title string, description string, imageUrl string, mediaSize
 	return content
 }
 
-func GetMediaMessage(url string, suggestions []any) []byte {
+func GetMediaMessage(url string, suggestions []RBMSuggestion) []byte {
 	contentMessage := ContentMessage{
 		ContentMessage: MediaMessage{
 			ContentInfo: ContentInfo{

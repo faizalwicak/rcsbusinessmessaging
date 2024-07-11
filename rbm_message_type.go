@@ -6,21 +6,53 @@ const (
 	MEDIA_HEIGHT_SMALL  string = "SMALL"
 )
 
+type RBMMessage interface {
+	GetType() string
+}
+
+type RBMSuggestion interface {
+	GetSuggestionType() string
+}
+
+type RBMRichCard interface {
+	GetRichCardType() string
+}
+
+type RBMSuggestionReply interface {
+	GetSuggestionReplyType() string
+}
+
+type RBMSuggestionAction interface {
+	GetSuggestionActionType() string
+}
+
 type ContentMessage struct {
-	ContentMessage any `json:"contentMessage"`
+	ContentMessage RBMMessage `json:"contentMessage"`
 }
 
 type TextMessage struct {
-	Text        string `json:"text"`
-	Suggestions []any  `json:"suggestions,omitempty"`
+	Text        string          `json:"text"`
+	Suggestions []RBMSuggestion `json:"suggestions,omitempty"`
+}
+
+func (m TextMessage) GetType() string {
+	return "text"
 }
 
 type RichCardMessage struct {
-	RichCard any `json:"richCard"`
+	RichCard RBMRichCard `json:"richCard"`
+}
+
+func (m RichCardMessage) GetType() string {
+	return "rich card"
 }
 
 type StandaloneCardMessage struct {
 	StandaloneCard StandaloneCardMessageData `json:"standaloneCard"`
+}
+
+func (s StandaloneCardMessage) GetRichCardType() string {
+	return "standalone"
 }
 
 type StandaloneCardMessageData struct {
@@ -33,16 +65,20 @@ type CarouselCardMessage struct {
 	CarouselCard CarouselCardMessageData `json:"carouselCard"`
 }
 
+func (s CarouselCardMessage) GetRichCardType() string {
+	return "carousel"
+}
+
 type CarouselCardMessageData struct {
 	CardWidth    string        `json:"cardWidth"`
 	CardContents []CardContent `json:"cardContents"`
 }
 
 type CardContent struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Media       Media  `json:"media"`
-	Suggestions []any  `json:"suggestions,omitempty"`
+	Title       string          `json:"title"`
+	Description string          `json:"description"`
+	Media       Media           `json:"media"`
+	Suggestions []RBMSuggestion `json:"suggestions,omitempty"`
 }
 
 type Media struct {
@@ -51,8 +87,12 @@ type Media struct {
 }
 
 type MediaMessage struct {
-	ContentInfo ContentInfo `json:"contentInfo"`
-	Suggestions []any       `json:"suggestions,omitempty"`
+	ContentInfo ContentInfo     `json:"contentInfo"`
+	Suggestions []RBMSuggestion `json:"suggestions,omitempty"`
+}
+
+func (m MediaMessage) GetType() string {
+	return "media"
 }
 
 type ContentInfo struct {
@@ -61,7 +101,11 @@ type ContentInfo struct {
 }
 
 type ReplySuggestion struct {
-	Reply any `json:"reply"`
+	Reply RBMSuggestionReply `json:"reply"`
+}
+
+func (s ReplySuggestion) GetSuggestionType() string {
+	return "reply"
 }
 
 type SuggestedReply struct {
@@ -69,8 +113,16 @@ type SuggestedReply struct {
 	PostbackData string `json:"postbackData"`
 }
 
+func (r SuggestedReply) GetSuggestionReplyType() string {
+	return "reply"
+}
+
 type ActionSuggestion struct {
-	Action any `json:"action"`
+	Action RBMSuggestionAction `json:"action"`
+}
+
+func (s ActionSuggestion) GetSuggestionType() string {
+	return "action"
 }
 
 type ActionSuggestionData struct {
@@ -83,6 +135,10 @@ type ActionSuggestionData struct {
 	ViewLocatinoAction        *ViewLocatinoAction        `json:"viewLocationAction,omitempty"`
 	ShareLocationAction       *ShareLocationAction       `json:"shareLocationAction,omitempty"`
 	CreateCalendarEventAction *CreateCalendarEventAction `json:"createCalendarEventAction,omitempty"`
+}
+
+func (a ActionSuggestionData) GetSuggestionActionType() string {
+	return "action"
 }
 
 type OpenUrlAction struct {
