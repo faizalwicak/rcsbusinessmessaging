@@ -37,15 +37,15 @@ func main() {
 
 	// send single message
 	// return rbm id, status message, error
-	message := rbm.GetTextMessage("hello", []any{})
+	message := rbm.GetTextMessage("hello", []rbm.RBMSuggestion{})
 	rbmHelper.SendMessage("<msisdn>", message)
 
 	// send multiple message
 	// return rbm id, status message, error
 	messages := [][]byte{}
-	message1 := rbm.GetTextMessage("hello1", []any{})
+	message1 := rbm.GetTextMessage("hello1", []rbm.RBMSuggestion{})
 	messages = append(messages, message1)
-	message2 := rbm.GetTextMessage("hello2", []any{})
+	message2 := rbm.GetTextMessage("hello2", []rbm.RBMSuggestion{})
 	messages = append(messages, message2)
 	rbmHelper.SendMultipleMessage("<msisdn>", messages)
 
@@ -68,7 +68,7 @@ func main() {
 // #################################
 // generate text message
 // #################################
-suggestions := []any{}
+suggestions := []rbm.RBMSuggestion{}
 message = rbm.GetTextMessage("<text>", suggestions)
 
 // #################################
